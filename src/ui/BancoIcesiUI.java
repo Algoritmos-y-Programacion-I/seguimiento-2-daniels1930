@@ -16,6 +16,10 @@ public class BancoIcesiUI {
         ui.menu();
     }
 
+    /**
+     * Descripción: Crea una nueva interfaz de usuario para el banco
+     * @pos this.input != null && this.controller != null
+     */
     public BancoIcesiUI() {
         input = new Scanner(System.in);
         System.out.println("Ingrese el número de clientes que desea registrar: ");
@@ -24,6 +28,10 @@ public class BancoIcesiUI {
         controller = new BancoIcesiController(size);
     }
 
+    /**
+     * Descripción: Muestra el menú principal y procesa las opciones del usuario
+     * @pos El sistema se ejecuta hasta que el usuario selecciona salir
+     */
     public void menu() {
         System.out.println("Bienvenido a BancoIcesi");
 
@@ -70,6 +78,10 @@ public class BancoIcesiUI {
         } while (option != 0);
     }
 
+    /**
+     * Descripción: Solicita los datos del cliente y lo registra en el sistema
+     * @pos Se registra un nuevo cliente si hay espacio disponible
+     */
     public void registrarCliente() {
         System.out.println("Ingrese nombre del cliente:");
         String nombre = input.nextLine();
@@ -82,6 +94,10 @@ public class BancoIcesiUI {
         controller.registrarCliente(nombre, edad, cedula);
     }
 
+    /**
+     * Descripción: Solicita los datos para asignar una cuenta bancaria a un cliente
+     * @pos Se agrega una cuenta al cliente si existe y tiene espacio
+     */
     public void asignarCuentaBancariaCliente() {
         System.out.println("Ingrese cedula del cliente:");
         String cedula = input.nextLine();
@@ -97,6 +113,10 @@ public class BancoIcesiUI {
         controller.agregarCuentaCliente(cedula, banco, tipo, saldo);
     }
 
+    /**
+     * Descripción: Solicita los datos para depositar dinero en una cuenta
+     * @pos Se deposita el dinero si el cliente y la cuenta existen
+     */
     public void depositarDineroCuenta() {
         System.out.println("Ingrese cedula del cliente:");
         String cedula = input.nextLine();
@@ -110,6 +130,10 @@ public class BancoIcesiUI {
         controller.depositarDineroCuenta(cedula, index, monto);
     }
 
+    /**
+     * Descripción: Solicita los datos para retirar dinero de una cuenta
+     * @pos Se retira el dinero si hay fondos suficientes
+     */
     public void retirarDineroCuenta() {
         System.out.println("Ingrese cedula del cliente:");
         String cedula = input.nextLine();
@@ -123,6 +147,10 @@ public class BancoIcesiUI {
         controller.retirarDineroCuenta(cedula, index, monto);
     }
 
+    /**
+     * Descripción: Busca y muestra la información de un cliente por su cédula
+     * @pos Se muestra la información del cliente si existe
+     */
     public void consultarCliente() {
         System.out.println("Ingrese cedula del cliente:");
         String cedula = input.nextLine();
@@ -145,6 +173,10 @@ public class BancoIcesiUI {
         }
     }
 
+    /**
+     * Descripción: Calcula y muestra el saldo total de todas las cuentas
+     * @pos Se muestra el saldo total del banco
+     */
     public void consultarSaldoTotal() {
         double total = controller.calcularSaldoTotal();
         System.out.println("El saldo total de todas las cuentas es: " + total);
