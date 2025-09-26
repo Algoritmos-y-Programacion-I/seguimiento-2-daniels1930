@@ -1,43 +1,36 @@
 package ui;
 
 import java.util.Scanner;
+import model.BancoIcesiController;
+import model.Cliente;
+import model.Cuenta;
+import model.TipoCuenta;
 
 public class BancoIcesiUI {
 
-    /*
-     * ATENCION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-     * Agregue los atributos (relaciones) necesarios para conectar esta clase con el modelo.
-     */
-
     private Scanner input;
+    private BancoIcesiController controller;
 
     public static void main(String[] args) {
-
         BancoIcesiUI ui = new BancoIcesiUI();
         ui.menu();
-
     }
 
-    // Constructor
     public BancoIcesiUI() {
         input = new Scanner(System.in);
+        System.out.println("Ingrese el número de clientes que desea registrar: ");
+        int size = input.nextInt();
+        input.nextLine();
+        controller = new BancoIcesiController(size);
     }
 
-    /*
-     * ATENCION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-     * El siguiente metodo esta incompleto.
-     * Agregue la logica necesaria (instrucciones) para satisfacer los requerimientos
-     */
-
     public void menu() {
-
         System.out.println("Bienvenido a BancoIcesi");
 
         int option = 0;
         do {
             System.out.println("\nMenu Principal");
-            System.out.println("-".repeat(50));
-            System.out.println("Digite alguna de las siguientes opciones");
+            System.out.println("------------------------------");
             System.out.println("1) Registrar cliente");
             System.out.println("2) Asignar cuenta bancaria a cliente");
             System.out.println("3) Depositar dinero en cuenta bancaria de un cliente");
@@ -46,6 +39,7 @@ public class BancoIcesiUI {
             System.out.println("6) Consultar el saldo total de todas las cuentas");
             System.out.println("0) Salir del sistema");
             option = input.nextInt();
+            input.nextLine();
 
             switch (option) {
                 case 1:
@@ -67,45 +61,92 @@ public class BancoIcesiUI {
                     consultarSaldoTotal();
                     break;
                 case 0:
-                    System.out.println("\nGracias por usar nuestros servicios. Adios!");
+                    System.out.println("Gracias por usar nuestros servicios. Adios!");
                     break;
                 default:
-                    System.out.println("\nOpcion invalida. Intente nuevamente.");
+                    System.out.println("Opcion invalida. Intente nuevamente.");
                     break;
             }
-
         } while (option != 0);
-
     }
 
-    /*
-     * ATENCION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-     * Los siguientes metodos estan incompletos.
-     * Agregue la logica necesaria (instrucciones) para satisfacer los requerimientos
-     */
-
     public void registrarCliente() {
+        System.out.println("Ingrese nombre del cliente:");
+        String nombre = input.nextLine();
+        System.out.println("Ingrese edad:");
+        int edad = input.nextInt();
+        input.nextLine();
+        System.out.println("Ingrese cedula:");
+        String cedula = input.nextLine();
 
+        controller.registrarCliente(nombre, edad, cedula);
     }
 
     public void asignarCuentaBancariaCliente() {
+        System.out.println("Ingrese cedula del cliente:");
+        String cedula = input.nextLine();
+        System.out.println("Ingrese nombre del banco:");
+        String banco = input.nextLine();
+        System.out.println("Ingrese tipo de cuenta (AHORROS / CORRIENTE):");
+        String tipoStr = input.nextLine().toUpperCase();
+        TipoCuenta tipo = TipoCuenta.valueOf(tipoStr);
+        System.out.println("Ingrese saldo inicial:");
+        double saldo = input.nextDouble();
+        input.nextLine();
 
+        controller.agregarCuentaCliente(cedula, banco, tipo, saldo);
     }
 
     public void depositarDineroCuenta() {
+        System.out.println("Ingrese cedula del cliente:");
+        String cedula = input.nextLine();
+        System.out.println("Ingrese indice de la cuenta:");
+        int index = input.nextInt();
+        input.nextLine();
+        System.out.println("Ingrese monto a depositar:");
+        double monto = input.nextDouble();
+        input.nextLine();
 
+        controller.depositarDineroCuenta(cedula, index, monto);
     }
 
     public void retirarDineroCuenta() {
+        System.out.println("Ingrese cedula del cliente:");
+        String cedula = input.nextLine();
+        System.out.println("Ingrese indice de la cuenta:");
+        int index = input.nextInt();
+        input.nextLine();
+        System.out.println("Ingrese monto a retirar:");
+        double monto = input.nextDouble();
+        input.nextLine();
 
+        controller.retirarDineroCuenta(cedula, index, monto);
     }
 
     public void consultarCliente() {
-
+        System.out.println("Ingrese cedula del cliente:");
+        String cedula = input.nextLine();
+        Cliente cliente = controller.buscarClientePorCedula(cedula);
+        if (cliente != null) {
+            System.out.println("Nombre: " + cliente.getNombre());
+            System.out.println("Edad: " + cliente.getEdad());
+            System.out.println("Cedula: " + cliente.getCedula());
+            Cuenta[] cuentas = cliente.getCuentasList();
+            for (int i = 0; i < cuentas.length; i++) {
+                if (cuentas[i] != null) {
+                    System.out.println("Cuenta #" + i);
+                    System.out.println("Banco: " + cuentas[i].getNombreBanco());
+                    System.out.println("Tipo: " + cuentas[i].getTipo());
+                    System.out.println("Saldo: " + cuentas[i].getSaldo());
+                }
+            }
+        } else {
+            System.out.println("Cliente no encontrado.");
+        }
     }
 
     public void consultarSaldoTotal() {
-
+        double total = controller.calcularSaldoTotal();
+        System.out.println("El saldo total de todas las cuentas es: " + total);
     }
-
 }
